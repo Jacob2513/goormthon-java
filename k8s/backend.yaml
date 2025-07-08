@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golang-backend
+  template:
+    metadata:
+      labels:
+        app: golang-backend
+    spec:
+      containers:
+      - name: backend
+        image: 837126493345.dkr.ecr.ap-northeast-2.amazonaws.com/team1/backend:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: golang-backend-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang-backend
+spec:
+  selector:
+    app: golang-backend
+  ports:
+  - port: 80
+    targetPort: 8080
