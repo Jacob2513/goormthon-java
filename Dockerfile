@@ -7,6 +7,6 @@ RUN mvn clean package -DskipTests
 # 2단계: Runtime stage
 FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/target/*.jar ./
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
